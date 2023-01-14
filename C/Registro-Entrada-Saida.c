@@ -47,7 +47,6 @@ void registro(FILE *func, FILE *log){
     prt("CPF: ");
     scanf("%s", &f.cpf);
     ClearBuffer;
-
     int newcpf=1;
     fseek(func, 0, SEEK_SET);
     while(fread(&aux, sizeof(struct Func), 1, func)){
@@ -109,10 +108,15 @@ void listagem_funcionarios(FILE *func){
 
 void listagem_log(FILE *log) {
     struct Log l;
+    char aux[11];
+    prt("Qual funcionario voce deseja? (-1 para todos)\n");
+    prt("CPF: ");
+    scanf("%s", &aux);
     fseek(log, 0, SEEK_SET);
     while(fread(&l, sizeof(struct Log), 1, log)){
-        printLog(l);
+        if(strcmp(l.cpf,aux) == 0 || strcmp(aux, "-1") == 0) printLog(l);
     }
+    ClearBuffer;
 }
 
 
@@ -127,7 +131,7 @@ int main() {
     log = fopen("log.bin", "rb+");
     if(log == NULL) log= fopen("log.bin", "wb+");
 
-    // -------------- MENU -----------------
+    // a partir daqui nesta função main() o código não deve ser alterado
     int opcao;
     do {
         printf("\n\n 0-sair\n 1-registro entrada/saida\n 2-lista funcionarios\n 3-lista log\n");
